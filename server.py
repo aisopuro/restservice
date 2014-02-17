@@ -9,7 +9,9 @@ backend = Backend()
 @app.route('/')
 def index():
     response = backend.get_root()
-    return jsonify(response)
+    r = jsonify(response)
+    print r
+    return r
 
 if __name__ == "__main__":
     app.run()

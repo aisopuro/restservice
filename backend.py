@@ -10,4 +10,5 @@ class Backend():
         print self.db
 
     def get_root(self):
-        return self.db.products.find()
+        print self.db.products.find_one()
+        return self.db.products.find_one()
