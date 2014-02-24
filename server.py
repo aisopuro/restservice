@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, request
 from flask.json import jsonify
 from backend import Backend
 
@@ -8,10 +8,13 @@ backend = Backend()
 
 @app.route('/')
 def index():
-    response = backend.get_root()
-    r = jsonify(response)
-    print r
-    return r
+    response = "This is restservice. Specify a url to use the REST interface"
+    return response
+
+
+@app.route('/products/', methods=['GET'])
+def get_products():
+    return str(request.args)
 
 if __name__ == "__main__":
     app.run()
