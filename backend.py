@@ -34,7 +34,6 @@ class Backend():
         parsed_args = {}
         for argument in ACCEPTED_ARGS:
             value = raw_args.getlist(argument)
-            print value
             if not value:
                 # No matches
                 continue
@@ -42,7 +41,6 @@ class Backend():
                 # Limit search results by first given argument
                 parsed_args[argument] = value[0]
             elif argument is ARG_FIELD or argument is ARG_NOT_FIELD:
-                print 'here'
                 if 'fields' not in parsed_args:
                     parsed_args['fields'] = {'_id': False}
                 if argument is ARG_FIELD:
@@ -51,5 +49,16 @@ class Backend():
                     include = False
                 for field in value:
                     parsed_args['fields'][field] = include
-        print parsed_args
+            elif argument is ARG_CATEGORY or argument is ARG_NOT_CATEGORY:
+                if 'spec' not in parsed_args:
+                    parsed_args['spec'] = {}
+                if argument is ARG_CATEGORY:
+                    include = True
+                else:
+                    include = False
+                for category in value:
+                    parsed_args['spec'][category] = {'$exists': include}
+            else:
+                # Unsupported parameter
+                continue
         return parsed_args
