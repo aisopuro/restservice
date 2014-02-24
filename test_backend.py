@@ -38,6 +38,7 @@ class TestBackend():
         args = ImmutableMultiDict([('dfdd', 'frefrf'), (342, 4334)])
         assert self.backend.parse_args(args) == {}
 
+    def test_parse_args_limit(self):
         # Correct arg should return dict with arg as key
         args = ImmutableMultiDict([
             ('limit', 20),
@@ -48,8 +49,9 @@ class TestBackend():
         # value should be the first passed parameter
         assert val['limit'] == 20
 
+    def test_parse_args_field(self):
         # giving a field argument should return dict with fields as key
-        args = args = ImmutableMultiDict([
+        args = ImmutableMultiDict([
             ('field', 'price'),
             ('notfield', 'description')
         ])
@@ -57,3 +59,13 @@ class TestBackend():
         assert 'fields' in val
         # Should be dict
         assert type(val['fields']) is dict
+
+    def test_parse_args_category(self):
+        args = args = ImmutableMultiDict([
+            ('category', 'Electronics'),
+            ('notcategory', 'Flim flam')
+        ])
+        val = self.backend.parse_args(args)
+        assert 'spec' in val
+        assert val['spec']['Electronics']['$exists']
+        assert not val['spec']['Flim flam']['$exists']
