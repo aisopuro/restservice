@@ -112,9 +112,19 @@ class TestBackend():
     def test_get_products(self):
         args = ImmutableMultiDict([
             ('limit', 10),
-            ('category', 'Electronics')
+            ('category', 'Electronics'),
+            ('category', 'Books'),
+            ('subcategory', 'Romance'),
+            ('subcategory', 'Tablet'),
+            ('maxprice', 500)
         ])
         val = self.backend.get_products(args)
         assert len(val) == 10
         for doc in val:
-            assert doc['category'] == 'Electronics'
+            assert doc['category'] in [
+                'Electronics',
+                'Books'
+                ] and doc['subcategory'] in [
+                    'Romance',
+                    'Tablet'
+                ] and doc['price'] <= 500
