@@ -47,8 +47,8 @@ class TestBackend():
         ])
         val = self.backend.parse_args(args)
         assert 'limit' in val
-        # value should be the first passed parameter
-        assert val['limit'] == 20
+        # value should be the last passed parameter
+        assert val['limit'] == 15
 
     def test_parse_args_field(self):
         # giving a field argument should return dict with fields as key
@@ -70,6 +70,29 @@ class TestBackend():
         assert 'spec' in val
         assert 'Electronics' in val['spec']['category']['$in']
         assert 'Flim flam' in val['spec']['category']['$nin']
+
+    def test_parse_args_price(self):
+        args = ImmutableMultiDict([
+            ('maxprice', 50),
+            ('maxprice', 200)
+        ])
+        val = self.backend.parse_args(args)
+        assert 'price' in val['spec']
+        assert '$lt' in val['spec']['price']
+        assert val['spec']['price']['$lt'] == 200
+
+    def test_parse_args_subcategory(self):
+        args = ImmutableMultiDict([
+            ('subcategory', 'Computers'),
+            ('subcategory', 'Comic strips'),
+            ('notsubcategory', 'Thriller')
+        ])
+        val = self.backend.parse_args(args)
+
+        assert 'spec' in val
+        assert 'Computers' in val['spec']['subcategory']['$in']
+        assert 'Comic strips' in val['spec']['subcategory']['$in']
+        assert 'Thriller' in val['spec']['subcategory']['$nin']
 
     def test_search(self):
         args = {
