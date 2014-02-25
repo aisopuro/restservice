@@ -1,6 +1,7 @@
 from backend import Backend
 from types import DictType
 from werkzeug.datastructures import ImmutableMultiDict
+import pprint
 import logging as log
 
 
@@ -67,18 +68,30 @@ class TestBackend():
         ])
         val = self.backend.parse_args(args)
         assert 'spec' in val
-        assert val['spec']['Electronics']['$exists']
-        assert not val['spec']['Flim flam']['$exists']
+        assert 'Electronics' in val['spec']['category']['$in']
+        assert 'Flim flam' in val['spec']['category']['$nin']
 
     def test_search(self):
-        pass
+        args = {
+            'limit': 10,
+            'spec': {
+                'category': {
+                    '$in': ['Electronics']
+                }
+            }
+        }
+        val = self.backend.search(self.backend.db.products, args)
+        assert len(val) == 10
+        for doc in val:
+            #pprint.pprint(doc)
+            assert doc['category'] == 'Electronics'
 
     def test_get_products(self):
         args = ImmutableMultiDict([
-            ('category', 'Electronics'),
-            ('notcategory', 'Flim flam')
+            ('limit', 10),
+            ('category', 'Electronics')
         ])
         val = self.backend.get_products(args)
-        assert 'spec' in val
-        assert val['spec']['Electronics']['$exists']
-        assert not val['spec']['Flim flam']['$exists']
+        assert len(val) == 10
+        for doc in val:
+            assert doc['category'] == 'Electronics'

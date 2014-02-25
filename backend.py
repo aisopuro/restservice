@@ -32,7 +32,9 @@ class Backend():
         return self.search(self.db.products, args)
 
     def search(self, collection, args):
-        return list(collection.find(**args))
+        result = collection.find(**args)
+        print result
+        return list(result)
 
     def parse_args(self, raw_args=None):
         parsed_args = {}
@@ -56,14 +58,21 @@ class Backend():
                 for field in value:
                     parsed_args['fields'][field] = include
             elif argument is ARG_CATEGORY or argument is ARG_NOT_CATEGORY:
-                if 'spec' not in parsed_args:
-                    parsed_args['spec'] = {}
                 if argument is ARG_CATEGORY:
-                    include = True
+                    incl = '$in'
+                    nincl = '$nin'
                 else:
-                    include = False
-                for category in value:
-                    parsed_args['spec'][category] = {'$exists': include}
+                    incl = '$nin'
+                    nincl = '$in'
+                if 'spec' in parsed_args and 'category' in parsed_args['spec']:
+                    parsed_args['spec']['category'][incl] += value
+                else:
+                    parsed_args['spec'] = {
+                        'category': {
+                            incl: value,
+                            nincl: []
+                        }
+                    }
             else:
                 # Unsupported parameter
                 continue
