@@ -1,6 +1,7 @@
 from backend import Backend
 from types import DictType
 from werkzeug.datastructures import ImmutableMultiDict
+import pprint
 import logging as log
 
 
@@ -46,8 +47,8 @@ class TestBackend():
         ])
         val = self.backend.parse_args(args)
         assert 'limit' in val
-        # value should be the first passed parameter
-        assert val['limit'] == 20
+        # value should be the last passed parameter
+        assert val['limit'] == 15
 
     def test_parse_args_field(self):
         # giving a field argument should return dict with fields as key
@@ -61,11 +62,69 @@ class TestBackend():
         assert type(val['fields']) is dict
 
     def test_parse_args_category(self):
-        args = args = ImmutableMultiDict([
+        args = ImmutableMultiDict([
             ('category', 'Electronics'),
             ('notcategory', 'Flim flam')
         ])
         val = self.backend.parse_args(args)
         assert 'spec' in val
-        assert val['spec']['Electronics']['$exists']
-        assert not val['spec']['Flim flam']['$exists']
+        assert 'Electronics' in val['spec']['category']['$in']
+        assert 'Flim flam' in val['spec']['category']['$nin']
+
+    def test_parse_args_price(self):
+        args = ImmutableMultiDict([
+            ('maxprice', 50),
+            ('maxprice', 200)
+        ])
+        val = self.backend.parse_args(args)
+        assert 'price' in val['spec']
+        assert '$lt' in val['spec']['price']
+        assert val['spec']['price']['$lt'] == 200
+
+    def test_parse_args_subcategory(self):
+        args = ImmutableMultiDict([
+            ('subcategory', 'Computers'),
+            ('subcategory', 'Comic strips'),
+            ('notsubcategory', 'Thriller')
+        ])
+        val = self.backend.parse_args(args)
+
+        assert 'spec' in val
+        assert 'Computers' in val['spec']['subcategory']['$in']
+        assert 'Comic strips' in val['spec']['subcategory']['$in']
+        assert 'Thriller' in val['spec']['subcategory']['$nin']
+
+    def test_search(self):
+        args = {
+            'limit': 10,
+            'spec': {
+                'category': {
+                    '$in': ['Electronics']
+                }
+            }
+        }
+        val = self.backend.search(self.backend.db.products, args)
+        assert len(val) == 10
+        for doc in val:
+            #pprint.pprint(doc)
+            assert doc['category'] == 'Electronics'
+
+    def test_get_products(self):
+        args = ImmutableMultiDict([
+            ('limit', 10),
+            ('category', 'Electronics'),
+            ('category', 'Books'),
+            ('subcategory', 'Romance'),
+            ('subcategory', 'Tablet'),
+            ('maxprice', 500)
+        ])
+        val = self.backend.get_products(args)
+        assert len(val) == 10
+        for doc in val:
+            assert doc['category'] in [
+                'Electronics',
+                'Books'
+                ] and doc['subcategory'] in [
+                    'Romance',
+                    'Tablet'
+                ] and doc['price'] <= 500

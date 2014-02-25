@@ -9,13 +9,26 @@ ARG_FIELD = 'field'
 ARG_NOT_FIELD = 'notfield'
 ARG_CATEGORY = 'category'
 ARG_NOT_CATEGORY = 'notcategory'
+ARG_SUBCATEGORY = 'subcategory'
+ARG_NOT_SUBCATEGORY = 'notsubcategory'
+ARG_MAX_PRICE = 'maxprice'
+
+CATEGORIES = [
+    ARG_CATEGORY,
+    ARG_NOT_CATEGORY,
+    ARG_SUBCATEGORY,
+    ARG_NOT_SUBCATEGORY
+]
 
 ACCEPTED_ARGS = [
     ARG_LIMIT,
     ARG_FIELD,
     ARG_NOT_FIELD,
     ARG_CATEGORY,
-    ARG_NOT_CATEGORY
+    ARG_NOT_CATEGORY,
+    ARG_SUBCATEGORY,
+    ARG_NOT_SUBCATEGORY,
+    ARG_MAX_PRICE
 ]
 
 
@@ -29,17 +42,30 @@ class Backend():
 
     def get_products(self, raw_args):
         args = self.parse_args(raw_args)
+        return self.search(self.db.products, args)
 
-    def parse_args(self, raw_args):
+    def search(self, collection, args):
+        result = collection.find(**args)
+        return list(result)
+
+    def parse_args(self, raw_args=None):
         parsed_args = {}
+
+        def check_parsed(field):
+            if 'spec' not in parsed_args:
+                parsed_args['spec'] = {}
+            if field not in parsed_args['spec']:
+                parsed_args['spec'][field] = {}
+        if not raw_args:
+            return parsed_args
         for argument in ACCEPTED_ARGS:
             value = raw_args.getlist(argument)
             if not value:
                 # No matches
                 continue
             if argument is ARG_LIMIT:
-                # Limit search results by first given argument
-                parsed_args[argument] = value[0]
+                # Limit search results by last given argument
+                parsed_args[argument] = value[-1]
             elif argument is ARG_FIELD or argument is ARG_NOT_FIELD:
                 if 'fields' not in parsed_args:
                     parsed_args['fields'] = {'_id': False}
@@ -49,15 +75,23 @@ class Backend():
                     include = False
                 for field in value:
                     parsed_args['fields'][field] = include
-            elif argument is ARG_CATEGORY or argument is ARG_NOT_CATEGORY:
-                if 'spec' not in parsed_args:
-                    parsed_args['spec'] = {}
-                if argument is ARG_CATEGORY:
-                    include = True
+            elif argument in CATEGORIES:
+                # Inclusive or exclusive
+                if argument in [ARG_CATEGORY, ARG_SUBCATEGORY]:
+                    incl = '$in'
                 else:
-                    include = False
-                for category in value:
-                    parsed_args['spec'][category] = {'$exists': include}
+                    incl = '$nin'
+                # category- or subcategory-field
+                if argument in [ARG_CATEGORY, ARG_NOT_CATEGORY]:
+                    field = 'category'
+                else:
+                    field = 'subcategory'
+                check_parsed(field)
+                parsed_args['spec'][field][incl] = value
+            elif argument is ARG_MAX_PRICE:
+                check_parsed('price')
+                # Limit to prices lower than last given argument
+                parsed_args['spec']['price']['$lt'] = value[-1]
             else:
                 # Unsupported parameter
                 continue
