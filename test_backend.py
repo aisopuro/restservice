@@ -61,11 +61,24 @@ class TestBackend():
         assert type(val['fields']) is dict
 
     def test_parse_args_category(self):
-        args = args = ImmutableMultiDict([
+        args = ImmutableMultiDict([
             ('category', 'Electronics'),
             ('notcategory', 'Flim flam')
         ])
         val = self.backend.parse_args(args)
+        assert 'spec' in val
+        assert val['spec']['Electronics']['$exists']
+        assert not val['spec']['Flim flam']['$exists']
+
+    def test_search(self):
+        pass
+
+    def test_get_products(self):
+        args = ImmutableMultiDict([
+            ('category', 'Electronics'),
+            ('notcategory', 'Flim flam')
+        ])
+        val = self.backend.get_products(args)
         assert 'spec' in val
         assert val['spec']['Electronics']['$exists']
         assert not val['spec']['Flim flam']['$exists']

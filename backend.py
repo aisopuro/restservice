@@ -29,9 +29,15 @@ class Backend():
 
     def get_products(self, raw_args):
         args = self.parse_args(raw_args)
+        return self.search(self.db.products, args)
 
-    def parse_args(self, raw_args):
+    def search(self, collection, args):
+        return list(collection.find(**args))
+
+    def parse_args(self, raw_args=None):
         parsed_args = {}
+        if not raw_args:
+            return parsed_args
         for argument in ACCEPTED_ARGS:
             value = raw_args.getlist(argument)
             if not value:
