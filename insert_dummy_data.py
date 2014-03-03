@@ -23,18 +23,20 @@ def insert(name, description, category, subcategory, minprice, maxprice, pricest
         doc['category'] = category
         doc['subcategory'] = subcategory
         doc['price'] = randrange(minprice, maxprice, pricestep) + 0.99
-        doc['amount'] = randint(0, 100)
+        doc['amount'] = randint(0, 50)
         products.insert(doc)
         if i % 10 == 0:
             print ('.'),
-        print 'done'
+    print 'done'
 
-insert('Computer nr %i', 'Lots of processors', 'Electronics', 'Computers', 249, 2999, 10, 100)
-insert('Tablet nr %i', 'Shiny', 'Electronics', 'Tablet', 249, 799, 20, 50)
-insert('Phone nr %i', 'Handy', 'Electronics', 'Mobile', 149, 699, 20, 20)
-insert('Thriller nr %i', 'Erudite', 'Books', 'Thriller', 9, 24, 100)
-insert('Romance nr %i', 'Lovely', 'Books', 'Romance', 4, 19, 100)
-insert('Movie nr %i', 'Gripping', 'Movies', 'Suspense', 9, 19, 5, 50)
-insert('Comic nr %i', 'Graphic', 'Graphic novels', 'Comic strips', 14, 29, 3, 70)
-insert('Accessory nr %i', 'Accessible', 'Electronics', 'Accessories', 39, 149, 5, 100)
-insert('Game nr %i', 'Interactive', 'Games', 'Action Adventure', 4, 59, 5, 100)
+insert('Computer nr %i', 'Lots of processors', 'electronics', 'computers', 249, 2999, 10, 100)
+insert('Tablet nr %i', 'Shiny', 'electronics', 'tablet', 249, 799, 20, 50)
+insert('Phone nr %i', 'Handy', 'electronics', 'mobile', 149, 699, 20, 20)
+insert('Thriller nr %i', 'Erudite', 'books', 'thriller', 9, 24, 100)
+insert('Romance nr %i', 'Lovely', 'books', 'romance', 4, 19, 100)
+insert('Movie nr %i', 'Gripping', 'movies', 'suspense', 9, 19, 5, 50)
+insert('Romance Movie nr %i', 'Gripping', 'movies', 'romance', 9, 19, 5, 50)
+insert('Comic nr %i', 'Graphic', 'comics', 'strips', 14, 29, 3, 70)
+insert('Accessory nr %i', 'Accessible', 'electronics', 'accessories', 39, 149, 5, 100)
+insert('Game nr %i', 'Interactive', 'games', 'action-adventure', 4, 59, 5, 100)
+insert('Horror Game nr %i', 'Interactive', 'games', 'horror', 4, 59, 5, 100)
