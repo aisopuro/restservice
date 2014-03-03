@@ -59,6 +59,9 @@ class Backend():
         args = self.parse_args(raw_args)
         return self.search(self.db.products, args)
 
+    def get_categories(self):
+        return self.db.products.find().distinct('category')
+
     def search(self, collection, args):
         result = collection.find(**args)
         return list(result)
@@ -78,6 +81,12 @@ class Backend():
             if not value:
                 # No matches
                 continue
+            try:
+                # Make lowercase
+                value = [string.lower() for string in value]
+            except:
+                # Not strings
+                pass
             if argument is ARG_LIMIT:
                 # Limit search results by last given argument
                 try:
@@ -89,7 +98,7 @@ class Backend():
             elif argument is ARG_NOT_FIELD:
                 # exclude specified fields
                 for field in value:
-                    parsed_args['fields'][field] = False
+                    parsed_args['fields'][field.lower()] = False
             elif argument in CATEGORIES:
                 # Inclusive or exclusive
                 if argument in [ARG_CATEGORY, ARG_SUBCATEGORY]:

@@ -38,6 +38,17 @@ class TestBackend():
         args = ImmutableMultiDict([('dfdd', 'frefrf'), (342, 4334)])
         assert self.backend.parse_args(args) == BASE_ARGS
 
+    def test_get_categories(self):
+        categories = set([
+            'electronics',
+            'books',
+            'movies',
+            'comics',
+            'games'
+            ]
+        )
+        assert categories == set(self.backend.get_categories())
+
     def test_parse_args_limit(self):
         # Correct arg should return dict with arg as key
         args = ImmutableMultiDict([
@@ -78,13 +89,13 @@ class TestBackend():
 
     def test_parse_args_category(self):
         args = ImmutableMultiDict([
-            ('category', 'Electronics'),
+            ('category', 'electronics'),
             ('notcategory', 'Flim flam')
         ])
         val = self.backend.parse_args(args)
         assert 'spec' in val
-        assert 'Electronics' in val['spec']['category']['$in']
-        assert 'Flim flam' in val['spec']['category']['$nin']
+        assert 'electronics' in val['spec']['category']['$in']
+        assert 'flim flam' in val['spec']['category']['$nin']
 
     def test_parse_args_price(self):
         args = ImmutableMultiDict([
@@ -98,16 +109,16 @@ class TestBackend():
 
     def test_parse_args_subcategory(self):
         args = ImmutableMultiDict([
-            ('subcategory', 'Computers'),
-            ('subcategory', 'Comic strips'),
-            ('notsubcategory', 'Thriller')
+            ('subcategory', 'computers'),
+            ('subcategory', 'strips'),
+            ('notsubcategory', 'thriller')
         ])
         val = self.backend.parse_args(args)
 
         assert 'spec' in val
-        assert 'Computers' in val['spec']['subcategory']['$in']
-        assert 'Comic strips' in val['spec']['subcategory']['$in']
-        assert 'Thriller' in val['spec']['subcategory']['$nin']
+        assert 'computers' in val['spec']['subcategory']['$in']
+        assert 'strips' in val['spec']['subcategory']['$in']
+        assert 'thriller' in val['spec']['subcategory']['$nin']
 
     def test_parse_args_sort(self):
         args = ImmutableMultiDict([
@@ -142,7 +153,7 @@ class TestBackend():
             'limit': 10,
             'spec': {
                 'category': {
-                    '$in': ['Electronics']
+                    '$in': ['electronics']
                 }
             }
         }
@@ -150,24 +161,24 @@ class TestBackend():
         assert len(val) == 10
         for doc in val:
             #pprint(doc)
-            assert doc['category'] == 'Electronics'
+            assert doc['category'] == 'electronics'
 
     def test_get_products(self):
         args = ImmutableMultiDict([
             ('limit', 10),
-            ('category', 'Electronics'),
-            ('category', 'Books'),
-            ('subcategory', 'Romance'),
-            ('subcategory', 'Tablet'),
+            ('category', 'electronics'),
+            ('category', 'books'),
+            ('subcategory', 'romance'),
+            ('subcategory', 'tablet'),
             ('maxprice', 500)
         ])
         val = self.backend.get_products(args)
         assert len(val) == 10
         for doc in val:
             assert doc['category'] in [
-                'Electronics',
-                'Books'
+                'electronics',
+                'books'
                 ] and doc['subcategory'] in [
-                    'Romance',
-                    'Tablet'
+                    'romance',
+                    'tablet'
                 ] and doc['price'] <= 500

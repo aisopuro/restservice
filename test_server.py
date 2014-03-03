@@ -35,3 +35,19 @@ class TestServer(TestCase):
         for item in r_list:
             assert item['amount'] >= prev
             prev = item['amount']
+
+    def test_products_available(self):
+        response = self.app.get('/products/available?limit=10')
+        assert '200' in response.status
+        r_list = loads(response.data)
+        assert len(r_list) == 10
+        for item in r_list:
+            assert item['amount'] > 0
+
+    def test_products_category(self):
+        response = self.app.get('/products/categories/electronics?limit=10')
+        assert '200' in response.status
+        r_list = loads(response.data)
+        assert len(r_list) == 10
+        for item in r_list:
+            assert item['category'].lower() == 'electronics'
