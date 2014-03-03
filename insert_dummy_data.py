@@ -14,7 +14,7 @@ base_doc = {
 }
 
 
-def insert(name, description, category, subcategory, minprice, maxprice, pricestep=1, amount=100):
+def insert(name, description, category, subcategory, minprice, maxprice, pricestep=1, amount=50):
     print (subcategory),
     for i in range(0, amount):
         doc = base_doc.copy()

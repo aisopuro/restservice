@@ -1,7 +1,7 @@
-from backend import Backend
+from backend import Backend, BASE_ARGS
 from types import DictType
 from werkzeug.datastructures import ImmutableMultiDict
-import pprint
+from pprint import pprint
 import logging as log
 
 
@@ -23,7 +23,6 @@ class TestBackend():
             assert False
 
     def test_connection(self):
-        log.info('test_connection')
         try:
             obj = self.backend.db.products.find_one()
             log.info(obj)
@@ -33,11 +32,11 @@ class TestBackend():
 
     def test_parse_args(self):
         args = ImmutableMultiDict()
-        # No args should return empty dictionary
-        assert self.backend.parse_args(args) == {}
-        # Incorrect args should return empty dict
+        # No args should return base dictionary
+        assert self.backend.parse_args(args) == BASE_ARGS
+        # Incorrect args should return base dict
         args = ImmutableMultiDict([('dfdd', 'frefrf'), (342, 4334)])
-        assert self.backend.parse_args(args) == {}
+        assert self.backend.parse_args(args) == BASE_ARGS
 
     def test_parse_args_limit(self):
         # Correct arg should return dict with arg as key
@@ -60,6 +59,22 @@ class TestBackend():
         assert 'fields' in val
         # Should be dict
         assert type(val['fields']) is dict
+        assert 'price' not in val['fields']
+        assert not val['fields']['description']
+
+    def test_parse_args_field_id(self):
+        # giving a field argument should return dict with fields as key
+        args = ImmutableMultiDict([
+            ('field', '_id'),
+            ('notfield', 'description')
+        ])
+        val = self.backend.parse_args(args)
+        assert 'fields' in val
+        # Should be dict
+        assert type(val['fields']) is dict
+        # _id should be false
+        assert not val['fields']['_id']
+        assert not val['fields']['description']
 
     def test_parse_args_category(self):
         args = ImmutableMultiDict([
@@ -94,6 +109,34 @@ class TestBackend():
         assert 'Comic strips' in val['spec']['subcategory']['$in']
         assert 'Thriller' in val['spec']['subcategory']['$nin']
 
+    def test_parse_args_sort(self):
+        args = ImmutableMultiDict([
+            ('sort', 'category'),
+            ('sort', 'subcategory'),
+            ('dsort', 'price')
+        ])
+        val = self.backend.parse_args(args)
+
+        assert 'sort' in val
+        for field, direction in val['sort']:
+            if field in ['category', 'subcategory']:
+                assert direction > 0
+            elif field == 'price':
+                assert direction < 0
+            else:
+                assert False
+
+    def test_parse_args_amount(self):
+        args = ImmutableMultiDict([
+            ('minamount', 0),
+            ('minamount', 10),
+            ('minamount', 5)
+        ])
+        val = self.backend.parse_args(args)
+
+        assert 'spec' in val
+        assert val['spec']['amount']['$gte'] == 5
+
     def test_search(self):
         args = {
             'limit': 10,
@@ -106,7 +149,7 @@ class TestBackend():
         val = self.backend.search(self.backend.db.products, args)
         assert len(val) == 10
         for doc in val:
-            #pprint.pprint(doc)
+            #pprint(doc)
             assert doc['category'] == 'Electronics'
 
     def test_get_products(self):
