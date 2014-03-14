@@ -1,0 +1,24 @@
+<wsdl:description xmlns:wsdl="http://www.w3.org/ns/wsdl"
+    targetNamespace="http://aalto-digi-restservice.herokuapp.com/restapi/wsdl"
+    xmlns:tns="http://aalto-digi-restservice.herokuapp.com/restapi/wsdl">
+
+    <wsdl:binding name="ResrtServiceBinding"
+        type="http://www.w3.org/ns/wsdl/http"
+        interface="">
+        <wsdl:documentation>
+            The RESTful HTTP binding for the service.
+        </wsdl:documentation>
+        <wsdl:operation ref="" whttp:method="GET"/>
+    </wsdl:binding>
+    <!-- TODO: at IBM: Define the book list service operation -->
+    <wsdl:service name="RestService" interface="">
+        <wsdl:documentation>
+            A RESTful service for getting product information.
+        </wsdl:documentation>
+        <wsdl:endpoint name="RestServiceEndpoint"
+            binding="tns:ResrtServiceBinding"
+            address="http://aalto-digi-restservice.herokuapp.com/products/">
+        </wsdl:endpoint>
+    </wsdl:service>
+
+</wsdl:description>
