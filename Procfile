@@ -1,1 +1,1 @@
-web: python aalto-digi-restservice/server.py
+web: gunicorn server:app
