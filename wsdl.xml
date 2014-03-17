@@ -1,21 +1,36 @@
 <wsdl:description xmlns:wsdl="http://www.w3.org/ns/wsdl"
     targetNamespace="http://aalto-digi-restservice.herokuapp.com/restapi/wsdl"
-    xmlns:tns="http://aalto-digi-restservice.herokuapp.com/restapi/wsdl">
+    xmlns:tns="http://aalto-digi-restservice.herokuapp.com/restapi/wsdl"
+    xmlns:whttp="http://www.w3.org/ns/wsdl/http"
+    xmlns:wsdlx="http://www.w3.org/ns/wsdl-extensions">
+
+    <wsdl:interface name="RestServiceInterface">
+        <wsdl:operation name="getProductList"
+            pattern="http://www.w3.org/ns/wsdl/in-out"
+            style="http://www.w3.org/ns/wsdl/style/iri"
+            wsdlx:safe="true">
+            <wsdl:documentation>
+                This operation returns a JSON-string list of products in the catalog.
+            </wsdl:documentation>
+            <wsdl:input element=""/>
+            <wsdl:input element=""/>
+        </wsdl:operation>
+    </wsdl:interface>
 
     <wsdl:binding name="ResrtServiceBinding"
         type="http://www.w3.org/ns/wsdl/http"
-        interface="">
+        interface="tns:RestServiceInterface">
         <wsdl:documentation>
             The RESTful HTTP binding for the service.
         </wsdl:documentation>
         <wsdl:operation ref="" whttp:method="GET"/>
     </wsdl:binding>
-    <!-- TODO: at IBM: Define the book list service operation -->
-    <wsdl:service name="RestService" interface="">
+
+    <wsdl:service name="RestService" interface="tns:RestServiceInterface">
         <wsdl:documentation>
             A RESTful service for getting product information.
         </wsdl:documentation>
-        <wsdl:endpoint name="RestServiceEndpoint"
+        <wsdl:endpoint name="RestServiceHTTPEndpoint"
             binding="tns:ResrtServiceBinding"
             address="http://aalto-digi-restservice.herokuapp.com/products/">
         </wsdl:endpoint>

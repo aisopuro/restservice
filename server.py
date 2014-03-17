@@ -1,4 +1,4 @@
-from flask import Flask, request
+from flask import Flask, request, make_response
 from backend import Backend
 from json import dumps
 from werkzeug.datastructures import ImmutableMultiDict, MultiDict
@@ -35,6 +35,16 @@ def get_by_category(category):
     args = MultiDict(request.args)
     args.add('category', category)
     return dumps(backend.get_products(args))
+
+
+@app.route('/products/wsdl', methods=['GET'])
+def serve_wsdl():
+    try:
+        with app.open_resource('wsdl.xml', 'r') as wsdl:
+            return make_response(wsdl.read())
+    except Exception as e:
+        print e
+        abort(make_response(str(e), 500))
 
 if __name__ == "__main__":
     app.run()
