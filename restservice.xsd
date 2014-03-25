@@ -1,0 +1,43 @@
+<schema xmlns="http://www.w3.org/2001/XMLSchema"
+   targetNamespace="http://aalto-digi-restservice.herokuapp.com/restapi/xsd"
+   xmlns:tns="http://aalto-digi-restservice.herokuapp.com/restapi/xsd"
+   xmlns:restservice="http://aalto-digi-restservice.herokuapp.com/restapi/wsdl"
+   xmlns:js="http://json-schema.org/draft-04/schema#"
+   xmlns:wsdlx="http://www.w3.org/ns/wsdl-extensions"
+   elementFormDefault="qualified">
+  
+  <element name="getProductList" type="tns:getProductListType">
+    <annotation>
+      <documentation>
+         The request element for the product information service.
+      </documentation>
+    </annotation>
+  </element>
+  
+  <element name="productList" type="tns:productListType">
+    <annotation>
+      <documentation>
+         The response element for the service.
+      </documentation>
+    </annotation>
+  </element>
+  
+  <complexType name="getProductListType">
+    <sequence>
+      <element name="category" type="string" minOccurs="0" maxOccurs="unbounded"/>
+      <element name="notcategory" type="string" minOccurs="0" maxOccurs="unbounded"/>
+      <element name="subcategory" type="string" minOccurs="0" maxOccurs="unbounded"/>
+      <element name="notsubcategory" type="string" minOccurs="0" maxOccurs="unbounded"/>
+      <element name="field" type="string" minOccurs="0" maxOccurs="unbounded"/>
+      <element name="notfield" type="string" minOccurs="0" maxOccurs="unbounded"/>
+      <element name="limit" type="number" minOccurs="0" maxOccurs="unbounded"/>
+      <element name="maxprice" type="number" minOccurs="0" maxOccurs="unbounded"/>
+      <element name="minamount" type="number" minOccurs="0" maxOccurs="unbounded"/>
+    </sequence>
+  </complexType>
+
+  <complexType name="productListType">
+    <js:import namespace="http://aalto-digi-restservice.herokuapp.com/restapi/schema"
+      schemaLocation="restservice.schema.json"/>
+  </complexType>
+</schema>
