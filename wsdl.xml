@@ -12,7 +12,7 @@
 
     <wsdl:types>
         <js:import namespace="http://aalto-digi-restservice.herokuapp.com/restapi/schema"
-            schemaLocation="restservice.schema.json">
+            schemaLocation="restservice.schema.json"/>
     </wsdl:types>
 
     <wsdl:interface name="RestServiceInterface">
