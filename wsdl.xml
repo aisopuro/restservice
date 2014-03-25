@@ -1,50 +1,50 @@
 <wsdl:description xmlns:wsdl="http://www.w3.org/ns/wsdl"
-    targetNamespace="http://aalto-digi-restservice.herokuapp.com/restapi/wsdl"
-    xmlns:tns="http://aalto-digi-restservice.herokuapp.com/restapi/wsdl"
-    xmlns:whttp="http://www.w3.org/ns/wsdl/http"
-    xmlns:wsdlx="http://www.w3.org/ns/wsdl-extensions"
-    xmlns:js="http://json-schema.org/draft-04/schema#"
-    xmlns:msg="http://aalto-digi-restservice.herokuapp.com/restapi/schema">
+  targetNamespace="http://aalto-digi-restservice.herokuapp.com/restapi/wsdl"
+  xmlns:tns="http://aalto-digi-restservice.herokuapp.com/restapi/wsdl"
+  xmlns:whttp="http://www.w3.org/ns/wsdl/http"
+  xmlns:wsdlx="http://www.w3.org/ns/wsdl-extensions"
+  xmlns:js="http://json-schema.org/draft-04/schema#"
+  xmlns:msg="http://aalto-digi-restservice.herokuapp.com/restapi/schema">
 
+  <wsdl:documentation>
+    This is a WSDL 2.0 description of a RESTful web-service from which clients can get product information.
+  </wsdl:documentation>
+
+  <wsdl:types>
+    <js:import namespace="http://aalto-digi-restservice.herokuapp.com/restapi/schema"
+      schemaLocation="restservice.schema.json"/>
+  </wsdl:types>
+
+  <wsdl:interface name="RestServiceInterface">
+    <wsdl:operation name="getProductList"
+      pattern="http://www.w3.org/ns/wsdl/in-out"
+      style="http://www.w3.org/ns/wsdl/style/iri"
+      wsdlx:safe="true">
+      <wsdl:documentation>
+        This operation returns a JSON-string list of products in the catalog.
+      </wsdl:documentation>
+      <wsdl:input element="msg:getProductList"/>
+      <wsdl:output element="productList"/>
+    </wsdl:operation>
+  </wsdl:interface>
+
+  <wsdl:binding name="RestServiceBinding"
+    type="http://www.w3.org/ns/wsdl/http"
+    interface="tns:RestServiceInterface">
     <wsdl:documentation>
-        This is a WSDL 2.0 description of a RESTful web-service from which clients can get product information.
+      The RESTful HTTP binding for the service.
     </wsdl:documentation>
+    <wsdl:operation ref="tns:getProductList" whttp:method="GET"/>
+  </wsdl:binding>
 
-    <wsdl:types>
-        <js:import namespace="http://aalto-digi-restservice.herokuapp.com/restapi/schema"
-            schemaLocation="restservice.schema.json"/>
-    </wsdl:types>
-
-    <wsdl:interface name="RestServiceInterface">
-        <wsdl:operation name="getProductList"
-            pattern="http://www.w3.org/ns/wsdl/in-out"
-            style="http://www.w3.org/ns/wsdl/style/iri"
-            wsdlx:safe="true">
-            <wsdl:documentation>
-                This operation returns a JSON-string list of products in the catalog.
-            </wsdl:documentation>
-            <wsdl:input element="msg:getProductList"/>
-            <wsdl:output element="productList"/>
-        </wsdl:operation>
-    </wsdl:interface>
-
-    <wsdl:binding name="RestServiceBinding"
-        type="http://www.w3.org/ns/wsdl/http"
-        interface="tns:RestServiceInterface">
-        <wsdl:documentation>
-            The RESTful HTTP binding for the service.
-        </wsdl:documentation>
-        <wsdl:operation ref="tns:getProductList" whttp:method="GET"/>
-    </wsdl:binding>
-
-    <wsdl:service name="RestService" interface="tns:RestServiceInterface">
-        <wsdl:documentation>
-            A RESTful service for getting product information.
-        </wsdl:documentation>
-        <wsdl:endpoint name="RestServiceHTTPEndpoint"
-            binding="tns:RestServiceBinding"
-            address="http://aalto-digi-restservice.herokuapp.com/products/">
-        </wsdl:endpoint>
-    </wsdl:service>
+  <wsdl:service name="RestService" interface="tns:RestServiceInterface">
+    <wsdl:documentation>
+      A RESTful service for getting product information.
+    </wsdl:documentation>
+    <wsdl:endpoint name="RestServiceHTTPEndpoint"
+      binding="tns:RestServiceBinding"
+      address="http://aalto-digi-restservice.herokuapp.com/products/">
+    </wsdl:endpoint>
+  </wsdl:service>
 
 </wsdl:description>
