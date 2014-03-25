@@ -37,14 +37,16 @@ def get_by_category(category):
     return dumps(backend.get_products(args))
 
 
-@app.route('/products/wsdl', methods=['GET'])
+@app.route('/restapi/wsdl', methods=['GET'])
 def serve_wsdl():
-    try:
-        with app.open_resource('wsdl.xml', 'r') as wsdl:
-            return make_response(wsdl.read())
-    except Exception as e:
-        print e
-        abort(make_response(str(e), 500))
+    with app.open_resource('wsdl.xml', 'r') as wsdl:
+        return make_response(wsdl.read())
+
+
+@app.route('/restapi/schema', methods=['GET'])
+def serve_schema():
+    with app.open_resource('restservice.schema.json', 'r') as schema:
+        return make_response(schema.read())
 
 if __name__ == "__main__":
     app.run()

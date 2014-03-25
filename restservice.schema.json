@@ -1,0 +1,44 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "title": "Product list",
+    "description": "A list of products matching search criteria",
+    "type": "array",
+    "minItems": 0,
+    "items": {
+        "title": "Product",
+        "description": "A product description",
+        "properties": {
+            "name": {
+                "type": "string",
+                "description": "The name of the product"
+            },
+            "category": {
+                "type": "string"
+            },
+            "subcategory": {
+                "type": "string"
+            },
+            "description": {
+                "type": "string"
+            },
+            "amount": {
+                "type": "number",
+                "minimum": 0,
+                "description": "How many of this item are in stock"
+            },
+            "price": {
+                "type": "number",
+                "minimum": 0,
+                "exclusiveMimimum": true
+            }
+        },
+        "required": [
+            "name",
+            "category",
+            "subcategory",
+            "description",
+            "amount",
+            "price"
+        ]
+    }
+}
