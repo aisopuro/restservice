@@ -91,8 +91,10 @@ class Backend():
                 # Limit search results by last given argument
                 try:
                     val = int(value[-1])
+                    if val < 0:
+                        raise Exception('Less than 0')
                 except:
-                    # NaN
+                    # NaN or negative
                     continue
                 parsed_args[argument] = val
             elif argument is ARG_NOT_FIELD:
