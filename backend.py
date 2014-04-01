@@ -3,7 +3,7 @@ from werkzeug.datastructures import ImmutableMultiDict
 import logging as log
 from pprint import pprint
 
-#MONGO_URL = "mongodb://heroku:M0ng0_p455w0rd5_4_411@troup.mongohq.com:10002/restservice"
+MONGO_URL = "mongodb://heroku:M0ng0_p455w0rd5_4_411@troup.mongohq.com:10002/restservice"
 
 ARG_LIMIT = 'limit'
 ARG_NOT_FIELD = 'notfield'
