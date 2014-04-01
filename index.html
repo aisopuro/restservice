@@ -1,0 +1,10 @@
+<h1>RestService</h1>
+<p>This is RestService. You can search for products by going to <a href="http://aalto-digi-restservice.herokuapp.com/products/">http://aalto-digi-restservice.herokuapp.com/products/</a> and adding url query parameters.</p>
+<h3>Parameters</h3>
+<p><b>limit</b> - Give an upper limit of search results to return. Can give many, but only last parameter is processed. Only the last Number, negative values are interpreted as 0.</p><br>
+<p><b>notfield</b> - Give the name of a field that should not be included in the results, i.e "price" will return results that do not give their prices. String</p><br>
+<p><b>category</b> and <b>notcategory</b> - The category(ies) that should or shouldn't be included in the results. String</p><br>
+<p><b>subcategory</b> and <b>notsubcategory</b> - As with categories, only the more specific subcategory or genre. String</p><br>
+<p><b>maxprice</b> - Set the exclusive maximum price. I.e specifying 400 will return items whose price is at most 399.99. Number.</p><br>
+<p><b>sort</b> and <b>dsort</b> - Give the name of a field by which to sort up (sort) or down (dsort). Can give many. String</p><br>
+<p><b>minamount</b> - Give the inclusive minimum amount of product that should be in stock. I.e giving 0 means no products that are out of stock are returned. Can give many, but only last parameter is processed. Number</p>
