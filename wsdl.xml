@@ -3,6 +3,7 @@
   xmlns:tns="http://aalto-digi-restservice.herokuapp.com/restapi/wsdl"
   xmlns:whttp="http://www.w3.org/ns/wsdl/http"
   xmlns:wsdlx="http://www.w3.org/ns/wsdl-extensions"
+  xmlns:xs="http://www.w3.org/2001/XMLSchema"
   xmlns:js="http://json-schema.org/draft-04/schema#"
   xmlns:msg="http://aalto-digi-restservice.herokuapp.com/restapi/schema">
 
@@ -11,6 +12,7 @@
   </wsdl:documentation>
 
   <wsdl:types>
+    <xs:import namespace="http://aalto-digi-restservice.herokuapp.com/restapi/xsd" />
     <js:import namespace="http://aalto-digi-restservice.herokuapp.com/restapi/schema"
       schemaLocation="restservice.schema.json"/>
   </wsdl:types>

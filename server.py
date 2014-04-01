@@ -43,6 +43,12 @@ def serve_wsdl():
         return make_response(wsdl.read())
 
 
+@app.route('/restapi/xsd', methods=['GET'])
+def serve_xsd():
+    with app.open_resource('restservice.xsd', 'r') as xsd:
+        return make_response(xsd.read())
+
+
 @app.route('/restapi/schema', methods=['GET'])
 def serve_schema():
     with app.open_resource('restservice.schema.json', 'r') as schema:
