@@ -6,6 +6,8 @@ import logging as log
 
 
 class TestBackend():
+    '''A unittest class for nosetests. Tests backend and database functionality.
+    '''
     def setUp(self):
         log.basicConfig(level=log.DEBUG)
         self.backend = Backend()
@@ -45,8 +47,8 @@ class TestBackend():
             'movies',
             'comics',
             'games'
-            ]
-        )
+        ])
+
         assert categories == set(self.backend.get_categories())
 
     def test_parse_args_limit(self):
@@ -178,7 +180,7 @@ class TestBackend():
             assert doc['category'] in [
                 'electronics',
                 'books'
-                ] and doc['subcategory'] in [
-                    'romance',
-                    'tablet'
-                ] and doc['price'] <= 500
+            ] and doc['subcategory'] in [
+                'romance',
+                'tablet'
+            ] and doc['price'] <= 500

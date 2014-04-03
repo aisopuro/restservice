@@ -1,6 +1,9 @@
 from backend import Backend
 from random import randint, randrange
 
+'''A script for populating the database with data.
+'''
+
 back = Backend()
 
 products = back.db.products
