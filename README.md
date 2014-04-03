@@ -8,7 +8,7 @@ This is RestService. You can search for products by going to http://aalto-digi-r
 
 You can also go to http://aalto-digi-restservice.herokuapp.com/products/available/ to limit the search to available products.
 
-Go to http://aalto-digi-restservice.herokuapp.com/products/categories/somecategory to search for products in somecategory, for example http://aalto-digi-restservice.herokuapp.com/products/categories/electronics.
+Go to aalto-digi-restservice.herokuapp.com/products/categories/somecategory to search for products in somecategory, for example http://aalto-digi-restservice.herokuapp.com/products/categories/electronics.
 
 Going to http://aalto-digi-restservice.herokuapp.com/products/categories/ will return a list of categories in the database.
 
