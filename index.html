@@ -1,5 +1,9 @@
 <h1>RestService</h1>
 <p>This is RestService. You can search for products by going to <a href="http://aalto-digi-restservice.herokuapp.com/products/">http://aalto-digi-restservice.herokuapp.com/products/</a> and adding url query parameters.</p>
+<p>You can also go to <a href="http://aalto-digi-restservice.herokuapp.com/products/available/">http://aalto-digi-restservice.herokuapp.com/products/available/</a> to limit the search to available products.</p> 
+<p> Go to http://aalto-digi-restservice.herokuapp.com/products/categories/&#60category&#62 to search for products in <b>&#60category&#62</b>, for example <a href="http://aalto-digi-restservice.herokuapp.com/products/categories/electronics">http://aalto-digi-restservice.herokuapp.com/products/categories/electronics</a>.</p>
+<p>Going to <a href="http://aalto-digi-restservice.herokuapp.com/products/categories/">http://aalto-digi-restservice.herokuapp.com/products/categories/</a> will return a list of categories in the database.</p>
+<p>Query parameters can be used in all of these urls <b>except</b> <a href="http://aalto-digi-restservice.herokuapp.com/products/categories/">http://aalto-digi-restservice.herokuapp.com/products/categories/</a>.</p>
 <h3>Parameters</h3>
 <p><b>limit</b> - Number. Give an upper limit of search results to return. Can give many, but only last parameter is processed. Negative values are interpreted as 0.</p>
 <p><b>notfield</b> - String. Give the name of a field that should not be included in the results, i.e "price" will return results that do not give their prices.</p>

@@ -5,6 +5,8 @@ from pprint import pprint
 
 
 class TestServer(TestCase):
+    '''A unittest class for nosetests. Tests server urls.
+    '''
 
     def setUp(self):
         server.app.config['TESTING'] = True
