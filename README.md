@@ -2,7 +2,7 @@ RestService
 ===========
 
 This is an attempt at making REST service and describe it using WSDL as a course assignment.
-This project was made using [Flask](http://flask.pocoo.org/), deployed on [Heroku](https://www.heroku.com/‎) and uses a database provided by [MongoHQ](www.mongohq.com/‎).
+This project was made using [Flask](http://flask.pocoo.org/), deployed on [Heroku](https://www.heroku.com/‎) and uses a database provided by [MongoHQ](https://www.mongohq.com/‎).
 
 This is RestService. You can search for products by going to http://aalto-digi-restservice.herokuapp.com/products/ and adding url query parameters.
 You can also go to http://aalto-digi-restservice.herokuapp.com/products/available/ to limit the search to available products. 
