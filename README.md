@@ -5,9 +5,10 @@ This is an attempt at making REST service and describe it using WSDL as a course
 This project was made using [Flask](http://flask.pocoo.org/), deployed on [Heroku](https://www.heroku.com/‎) and uses a database provided by [MongoHQ](https://www.mongohq.com/‎).
 
 This is RestService. You can search for products by going to http://aalto-digi-restservice.herokuapp.com/products/ and adding url query parameters.
+
 You can also go to http://aalto-digi-restservice.herokuapp.com/products/available/ to limit the search to available products.
 
-Go to http://aalto-digi-restservice.herokuapp.com/products/categories/<category> to search for products in <category>, for example http://aalto-digi-restservice.herokuapp.com/products/categories/electronics.
+Go to http://aalto-digi-restservice.herokuapp.com/products/categories/somecategory to search for products in somecategory, for example http://aalto-digi-restservice.herokuapp.com/products/categories/electronics.
 
 Going to http://aalto-digi-restservice.herokuapp.com/products/categories/ will return a list of categories in the database.
 
