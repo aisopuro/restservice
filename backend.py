@@ -92,9 +92,9 @@ class Backend():
                 try:
                     val = int(value[-1])
                     if val < 0:
-                        raise Exception('Less than 0')
+                        val = 0
                 except:
-                    # NaN or negative
+                    # NaN
                     continue
                 parsed_args[argument] = val
             elif argument is ARG_NOT_FIELD:

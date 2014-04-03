@@ -9,8 +9,7 @@ backend = Backend()
 
 @app.route('/', methods=['GET'])
 def index():
-    response = "This is restservice. Specify a url to use the REST interface"
-    return response
+    return make_response(app.open_resource('index.html').read())
 
 
 @app.route('/products/', methods=['GET'])
